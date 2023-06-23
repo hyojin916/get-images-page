@@ -17,8 +17,22 @@ generateBtn.addEventListener('click', function () {
     }
   }
 
+  loadNewImage();
+});
+
+const loadNewImage = () => {
   const img = document.createElement('img');
   const randomId = Math.floor(Math.random() * 1000) + 1;
-  img.src = `https://picsum.photos/id/${randomId}/150/150?random=${randomId}`;
-  gridContainer.appendChild(img);
-});
+  const imageUrl = `https://picsum.photos/id/${randomId}/150/150?random=${randomId}`;
+  img.src = imageUrl;
+
+  // 에러처리
+  img.addEventListener('error', () => {
+    img.removeEventListener('load', loadNewImage);
+    loadNewImage();
+  });
+
+  img.addEventListener('load', () => {
+    gridContainer.appendChild(img);
+  });
+};
